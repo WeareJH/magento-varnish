@@ -3,7 +3,7 @@ MAINTAINER Michael Woodward <michael@wearejh.com>
 
 RUN apk add --no-cache varnish
 
-COPY default.vcl /etc/varnish/default.vcl
+COPY disabled.vcl enabled.vcl /etc/varnish/
 
 EXPOSE 80
-CMD ["varnishd", "-a", ":80", "-F", "-f", "/etc/varnish/default.vcl"]
+CMD ["varnishd", "-a", ":80", "-F", "-f", "/etc/varnish/enabled.vcl", "-f", "/etc/varnish/disabled.vcl"]
