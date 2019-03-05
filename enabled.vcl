@@ -8,11 +8,11 @@ import std;
 backend default {
     .host = "nginx";
     .port = "80";
-    .first_byte_timeout = 600s;
+    .first_byte_timeout = 300s;
     .probe = {
         .url = "/health_check.php";
         .timeout = 5s;
-        .interval = 10s;
+        .interval = 300s;
         .window = 10;
         .threshold = 5;
    }
