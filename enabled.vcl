@@ -3,7 +3,7 @@ vcl 4.0;
 
 import std;
 # The minimal Varnish version is 6.0
-# For SSL offloading, pass the following header in your proxy server or load balancer: '/* {{ ssl_offloaded_header }} */: https'
+# For SSL offloading, pass the following header in your proxy server or load balancer: 'X-Forwarded-Proto: https'
 
 backend default {
     .host = "nginx";
@@ -105,7 +105,7 @@ sub vcl_recv {
 
         # But if you use a few locales and don't use CDN you can enable caching static files by commenting previous line (#return (pass);) and uncommenting next 3 lines
         #unset req.http.Https;
-        #unset req.http./* {{ ssl_offloaded_header }} */;
+        #unset req.http.X-Forwarded-Proto;
         #unset req.http.Cookie;
     }
 
@@ -125,8 +125,8 @@ sub vcl_hash {
     }
 
     # To make sure http users don't see ssl warning
-    if (req.http./* {{ ssl_offloaded_header }} */) {
-        hash_data(req.http./* {{ ssl_offloaded_header }} */);
+    if (req.http.X-Forwarded-Proto) {
+        hash_data(req.http.X-Forwarded-Proto);
     }
     /* {{ design_exceptions_code }} */
 
